@@ -1,2 +1,2 @@
 # ExpensesApp
- Application to manage expenses
+ Application to manage expenses using Flutter
