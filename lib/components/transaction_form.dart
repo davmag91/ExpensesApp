@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double)? onSubmit;
@@ -16,6 +19,7 @@ class _TransactionFormState extends State<TransactionForm> {
   final titleController = TextEditingController();
 
   final valueController = TextEditingController();
+  DateTime? selectedDate;
 
   _submitForm() {
     final title = titleController.text;
@@ -53,12 +57,31 @@ class _TransactionFormState extends State<TransactionForm> {
               height: 70,
               child: Row(
                 children: [
-                  Text('No date selected!'),
+                  Expanded(
+                    child: Padding(
+                        padding: EdgeInsetsDirectional.only(end: 10),
+                        child: Text(
+                          selectedDate == null
+                              ? 'No date selected!'
+                              : 'Selected date: ' +
+                                  DateFormat('d MMM y')
+                                      .format(selectedDate as DateTime)
+                                      .toString(),
+                        )),
+                  ),
                   ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(
-                            Colors.transparent)),
-                    onPressed: () {},
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(Colors.grey)),
+                    onPressed: () => showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2019),
+                            lastDate: DateTime.now())
+                        .then((pickedDate) {
+                      if (pickedDate != null)
+                        setState(() => selectedDate = pickedDate);
+                    }),
                     child: Text('Select date',
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
