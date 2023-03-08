@@ -18,6 +18,10 @@ class ExpensesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MyHomePage(),
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        accentColor: Colors.amber,
+      ),
     );
   }
 }
@@ -63,13 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Despesas Pessoais'), actions: <Widget>[
-        IconButton(
-            onPressed: () {
-              _openTransactionFormModal(context);
-            },
-            icon: Icon(Icons.add))
-      ]),
+      appBar: AppBar(
+          title: Text('Despesas Pessoais'),
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: <Widget>[
+            IconButton(
+                onPressed: () {
+                  _openTransactionFormModal(context);
+                },
+                icon: Icon(Icons.add)),
+          ]),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
