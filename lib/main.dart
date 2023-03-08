@@ -30,6 +30,14 @@ class ExpensesApp extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.white,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.purple),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          )),
           appBarTheme: AppBarTheme(
             titleTextStyle: TextStyle(
                 fontFamily: 'OpenSans',

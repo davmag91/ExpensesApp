@@ -18,7 +18,8 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FittedBox(child: Text('${value.toString()} €')),
+        Container(
+            height: 20, child: FittedBox(child: Text('${value.toString()} €'))),
         SizedBox(
           height: 5,
         ),

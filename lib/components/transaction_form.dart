@@ -38,7 +38,7 @@ class _TransactionFormState extends State<TransactionForm> {
               controller: titleController,
               onSubmitted: (value) => _submitForm(),
               decoration: InputDecoration(
-                labelText: 'Título',
+                labelText: 'Title',
               ),
             ),
             TextField(
@@ -46,22 +46,43 @@ class _TransactionFormState extends State<TransactionForm> {
               controller: valueController,
               onSubmitted: (value) => _submitForm(),
               decoration: InputDecoration(
-                labelText: 'Valor (€)',
+                labelText: 'Value (€)',
+              ),
+            ),
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Text('No date selected!'),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll<Color>(
+                            Colors.transparent)),
+                    onPressed: () {},
+                    child: Text('Select date',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  )
+                ],
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: Theme.of(context)
+                        .elevatedButtonTheme
+                        .style!
+                        .backgroundColor,
+                  ),
                   onPressed: () {
                     _submitForm();
                   },
-                  child: Text(
-                    'Nova Transação',
-                    style: TextStyle(
-                      color: Colors.purple,
-                    ),
-                  ),
+                  child: Text('New Transaction',
+                      style: TextStyle(color: Colors.white)),
                 ),
               ],
             )
