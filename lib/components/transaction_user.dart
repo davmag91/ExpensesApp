@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -34,12 +36,56 @@ class _TransactionUserState extends State<TransactionUser> {
       value: 56,
       date: DateTime.now(),
     ),
+    Transaction(
+      id: 't3',
+      title: 'teste 3',
+      value: 56,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'teste 3',
+      value: 56,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'teste 3',
+      value: 56,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'teste 3',
+      value: 56,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'teste 3',
+      value: 56,
+      date: DateTime.now(),
+    ),
   ];
+
+  _addTransaction(String title, double value) {
+    final newTransaction = Transaction(
+      id: Random().nextDouble().toString(),
+      title: title,
+      value: value,
+      date: DateTime.now(),
+    );
+
+    setState(() => _transactions.add(newTransaction));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[TransactionList(_transactions), TransactionForm()],
+      children: <Widget>[
+        TransactionForm(onSubmit: _addTransaction),
+        TransactionList(_transactions),
+      ],
     );
   }
 }
