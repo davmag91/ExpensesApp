@@ -6,9 +6,10 @@ import 'package:intl/intl.dart';
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.onRemove);
 
   List<Transaction> transactions;
+  final void Function(String) onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +59,13 @@ class TransactionList extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     subtitle: Text(DateFormat('d MMM y').format(tr.date)),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      color: Theme.of(context).errorColor,
+                      onPressed: () {
+                        onRemove(tr.id);
+                      },
+                    ),
                   ),
                 );
               }),
