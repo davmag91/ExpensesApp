@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import './models/transaction.dart';
@@ -17,6 +18,8 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     return MaterialApp(
       home: MyHomePage(),
       theme: ThemeData(
@@ -59,49 +62,49 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
     Transaction(
       date: DateTime.now(),
-      id: Random.secure().hashCode.toString(),
+      id: Random().nextDouble().toString(),
       value: 10,
       title: 'Socks',
     ),
     Transaction(
       date: DateTime.now().subtract(Duration(days: 3)),
-      id: Random.secure().hashCode.toString(),
+      id: Random().nextDouble().toString(),
       value: 5,
       title: 'Teddy Bear',
     ),
     Transaction(
       date: DateTime.now().subtract(Duration(days: 2)),
-      id: Random.secure().hashCode.toString(),
+      id: Random().nextDouble().toString(),
       value: 20,
       title: 'Shirt',
     ),
     Transaction(
       date: DateTime.now().subtract(Duration(days: 4)),
-      id: Random.secure().hashCode.toString(),
+      id: Random().nextDouble().toString(),
       value: 5,
       title: 'Jeans',
     ),
     Transaction(
       date: DateTime.now().subtract(Duration(days: 5)),
-      id: Random.secure().hashCode.toString(),
+      id: Random().nextDouble().toString(),
       value: 30,
       title: 'Random Groceries',
     ),
     Transaction(
       date: DateTime.now().subtract(Duration(days: 2)),
-      id: Random.secure().hashCode.toString(),
+      id: Random().nextDouble().toString(),
       value: 2,
       title: 'Juice',
     ),
     Transaction(
       date: DateTime.now().subtract(Duration(days: 1)),
-      id: Random.secure().hashCode.toString(),
+      id: Random().nextDouble().toString(),
       value: 15,
       title: 'Book',
     ),
     Transaction(
       date: DateTime.now().subtract(Duration(days: 4)),
-      id: Random.secure().hashCode.toString(),
+      id: Random().nextDouble().toString(),
       value: 5,
       title: 'Book 2',
     ),
@@ -174,10 +177,10 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               child: Chart(_recentTransactions),
-              height: availableHeight * 0.22,
+              height: availableHeight * 0.30,
             ),
             Container(
-                height: availableHeight * 0.78,
+                height: availableHeight * 0.70,
                 child: TransactionList(_transactions, _deleteTransaction)),
           ],
         ),
