@@ -56,7 +56,56 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [];
+  final List<Transaction> _transactions = [
+    Transaction(
+      date: DateTime.now(),
+      id: Random.secure().hashCode.toString(),
+      value: 10,
+      title: 'Socks',
+    ),
+    Transaction(
+      date: DateTime.now().subtract(Duration(days: 3)),
+      id: Random.secure().hashCode.toString(),
+      value: 5,
+      title: 'Teddy Bear',
+    ),
+    Transaction(
+      date: DateTime.now().subtract(Duration(days: 2)),
+      id: Random.secure().hashCode.toString(),
+      value: 20,
+      title: 'Shirt',
+    ),
+    Transaction(
+      date: DateTime.now().subtract(Duration(days: 4)),
+      id: Random.secure().hashCode.toString(),
+      value: 5,
+      title: 'Jeans',
+    ),
+    Transaction(
+      date: DateTime.now().subtract(Duration(days: 5)),
+      id: Random.secure().hashCode.toString(),
+      value: 30,
+      title: 'Random Groceries',
+    ),
+    Transaction(
+      date: DateTime.now().subtract(Duration(days: 2)),
+      id: Random.secure().hashCode.toString(),
+      value: 2,
+      title: 'Juice',
+    ),
+    Transaction(
+      date: DateTime.now().subtract(Duration(days: 1)),
+      id: Random.secure().hashCode.toString(),
+      value: 15,
+      title: 'Book',
+    ),
+    Transaction(
+      date: DateTime.now().subtract(Duration(days: 4)),
+      id: Random.secure().hashCode.toString(),
+      value: 5,
+      title: 'Book 2',
+    ),
+  ];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where(
