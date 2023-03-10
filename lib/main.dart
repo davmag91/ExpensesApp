@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -147,79 +149,111 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  Widget _getIconButton(IconData icon, Function fn) {
+    return Platform.isIOS
+        ? GestureDetector(
+            onTap: () => fn,
+            child: Icon(icon),
+          )
+        : IconButton(
+            onPressed: () => fn,
+            icon: Icon(icon),
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
-
-    final appBar = AppBar(
-        title: Text(
-          'Personal Expenses',
-          style: TextStyle(
-            fontSize: 20 * MediaQuery.of(context).textScaleFactor,
-          ),
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              _openTransactionFormModal(context);
-            },
-            icon: Icon(Icons.add),
-          ),
-          if (isLandscape)
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  _showChart = !_showChart;
-                });
-              },
-              icon: Icon(_showChart ? Icons.list : Icons.show_chart),
-            ),
-        ]);
-
-    final availableHeight = MediaQuery.of(context).size.height -
-        appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
-
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            // if (isLandscape)
-            //   Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Text('Exibir gráfico'),
-            //       Switch(
-            //         value: _showChart,
-            //         onChanged: (value) {
-            //           setState(() => _showChart = value);
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            if (_showChart || !isLandscape)
-              Container(
-                child: Chart(_recentTransactions),
-                height: availableHeight * (isLandscape ? 0.8 : 0.3),
-              ),
-            if (!_showChart || !isLandscape)
-              Container(
-                  height: availableHeight * (isLandscape ? 1 : 0.7),
-                  child: TransactionList(_transactions, _deleteTransaction)),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
+    final actions = <Widget>[
+      _getIconButton(
+        Platform.isIOS ? CupertinoIcons.add : Icons.add,
+        () {
           _openTransactionFormModal(context);
         },
-        child: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      if (isLandscape)
+        _getIconButton(
+          _showChart ? Icons.list : Icons.show_chart,
+          () {
+            setState(() {
+              _showChart = !_showChart;
+            });
+          },
+        ),
+    ];
+
+    final appBar;
+    if (Platform.isIOS) {
+      appBar = CupertinoNavigationBar(
+        middle: Text('Personal Expenses'),
+        trailing: Row(mainAxisSize: MainAxisSize.min, children: actions),
+      );
+    } else {
+      appBar = AppBar(
+          title: Text(
+            'Personal Expenses',
+            style: TextStyle(
+              fontSize: 20 * mediaQuery.textScaleFactor,
+            ),
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: actions);
+    }
+
+    final availableHeight = mediaQuery.size.height -
+        appBar.preferredSize.height -
+        mediaQuery.padding.top;
+
+    final bodyPage = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          // if (isLandscape)
+          //   Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       Text('Exibir gráfico'),
+          //       Switch.adaptive(
+          //         activeColor: Theme.of(context).accentColor,
+          //         value: _showChart,
+          //         onChanged: (value) {
+          //           setState(() => _showChart = value);
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          if (_showChart || !isLandscape)
+            Container(
+              child: Chart(_recentTransactions),
+              height: availableHeight * (isLandscape ? 0.8 : 0.3),
+            ),
+          if (!_showChart || !isLandscape)
+            Container(
+                height: availableHeight * (isLandscape ? 1 : 0.7),
+                child: TransactionList(_transactions, _deleteTransaction)),
+        ],
+      ),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            child: bodyPage,
+            navigationBar: appBar,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: bodyPage,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    onPressed: () {
+                      _openTransactionFormModal(context);
+                    },
+                    child: Icon(Icons.add),
+                  ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+          );
   }
 }
