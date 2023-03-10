@@ -14,27 +14,32 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return transactions.isEmpty
-        ? Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Nothing to do here',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 200,
-                child: Image.asset(
-                  'assets/images/waiting.png',
-                  fit: BoxFit.cover,
+        ? LayoutBuilder(builder: (ctx, constraints) {
+            return Column(
+              children: [
+                SizedBox(
+                  height: constraints.maxHeight * 0.05,
                 ),
-              )
-            ],
-          )
+                Container(
+                  height: constraints.maxHeight * 0.3,
+                  child: Text(
+                    'Nothing to do here',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(
+                  height: constraints.maxHeight * 0.05,
+                ),
+                Container(
+                  height: constraints.maxHeight * 0.6,
+                  child: Image.asset(
+                    'assets/images/waiting.png',
+                    fit: BoxFit.cover,
+                  ),
+                )
+              ],
+            );
+          })
         : ListView.builder(
             itemCount: transactions.length,
             itemBuilder: (context, index) {
@@ -57,13 +62,28 @@ class TransactionList extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   subtitle: Text(DateFormat('d MMM y').format(tr.date)),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Theme.of(context).errorColor,
-                    onPressed: () {
-                      onRemove(tr.id);
-                    },
-                  ),
+                  trailing: MediaQuery.of(context).size.width > 400
+                      ? TextButton(
+                          onPressed: () {
+                            onRemove(tr.id);
+                          },
+                          child: Container(
+                            width: 80,
+                            child: Row(
+                              children: [
+                                Icon(Icons.delete),
+                                Text('Delete'),
+                              ],
+                            ),
+                          ),
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor,
+                          onPressed: () {
+                            onRemove(tr.id);
+                          },
+                        ),
                 ),
               );
             });
