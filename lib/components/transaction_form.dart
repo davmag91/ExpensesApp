@@ -5,6 +5,9 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
+import 'adaptative_button.dart';
+import 'adaptative_textfield.dart';
+import 'adaptative_datepicker.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime)? onSubmit;
@@ -44,74 +47,31 @@ class _TransactionFormState extends State<TransactionForm> {
               bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
             ),
             child: Column(children: <Widget>[
-              TextField(
+              AdaptativeTextField(
                 controller: titleController,
                 onSubmitted: (value) => _submitForm(),
-                decoration: InputDecoration(
-                  labelText: 'Title',
-                ),
+                label: 'Title',
               ),
-              TextField(
+              AdaptativeTextField(
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 controller: valueController,
                 onSubmitted: (value) => _submitForm(),
-                decoration: InputDecoration(
-                  labelText: 'Value (€)',
-                ),
+                label: 'Value (€)',
               ),
-              Container(
-                height: 70,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                          padding: EdgeInsetsDirectional.only(end: 10),
-                          child: Text(
-                            selectedDate == null
-                                ? 'No date selected!'
-                                : 'Selected date: ' +
-                                    DateFormat('d MMM y')
-                                        .format(selectedDate as DateTime)
-                                        .toString(),
-                          )),
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(Colors.grey)),
-                      onPressed: () => showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2019),
-                              lastDate: DateTime.now())
-                          .then((pickedDate) {
-                        if (pickedDate != null)
-                          setState(() => selectedDate = pickedDate);
-                      }),
-                      child: Text('Select date',
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    )
-                  ],
-                ),
+              AdaptativeDatepicker(
+                selectedDate: selectedDate,
+                onDateChanged: (newDate) {
+                  setState(() {
+                    selectedDate = newDate;
+                  });
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: Theme.of(context)
-                          .elevatedButtonTheme
-                          .style!
-                          .backgroundColor,
-                    ),
-                    onPressed: () {
-                      _submitForm();
-                    },
-                    child: Text('New Transaction',
-                        style: TextStyle(color: Colors.white)),
+                  AdaptativeButton(
+                    label: 'New Transaction',
+                    onPressed: _submitForm,
                   ),
                 ],
               )
