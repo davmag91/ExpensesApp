@@ -12,10 +12,15 @@ import 'adaptative_datepicker.dart';
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime)? onSubmit;
 
-  TransactionForm({this.onSubmit});
+  TransactionForm({this.onSubmit}) {
+    log('Constructor TransactionForm');
+  }
 
   @override
-  State<TransactionForm> createState() => _TransactionFormState();
+  State<TransactionForm> createState() {
+    log('createState TransactionForm');
+    return _TransactionFormState();
+  }
 }
 
 class _TransactionFormState extends State<TransactionForm> {
@@ -23,6 +28,28 @@ class _TransactionFormState extends State<TransactionForm> {
 
   final valueController = TextEditingController();
   DateTime? selectedDate = DateTime.now();
+
+  _TransactionFormState() {
+    log('Constructor _TransactionFormState');
+  }
+
+  @override
+  void initState() {
+    log('initState _TransactionFormState');
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    log('didUpdateWidget _TransactionFormState');
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    log('dispose _TransactionFormState');
+  }
 
   _submitForm() {
     final title = titleController.text;
